@@ -46,6 +46,7 @@
         <module>rest-ehr-scape</module>
         <module>rest-openehr</module>
         <module>service</module>
+        <module>modules</module>
         <module>test-coverage</module>
         <module>plugin</module>
     </modules>

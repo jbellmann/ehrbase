@@ -1,0 +1,218 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.ehrbase.openehr</groupId>
+    <artifactId>modules</artifactId>
+    <version>0.22.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>openehr-query</artifactId>
+
+  <properties>
+    <docker-maven-plugin.version>0.40.2</docker-maven-plugin.version>
+  </properties>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>jooq-pg</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>openehr-aql</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.ehrbase.openehr.sdk</groupId>
+      <artifactId>validation</artifactId>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.24</version>
+      <scope>compile</scope>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-ui</artifactId>
+      <scope>compile</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.jooq</groupId>
+      <artifactId>jooq</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.openehealth.ipf.commons</groupId>
+      <artifactId>ipf-commons-audit</artifactId>
+      <version>4.1.0</version>
+    </dependency>
+
+
+    <!-- TESTING -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jooq</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>1.17.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.0.0-M7</version>
+      </plugin>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>${docker-maven-plugin.version}</version>
+        <configuration>
+          <images>
+            <image>
+              <name>ehrbase/ehrbase-postgres:latest</name>
+              <alias>postgres</alias>
+              <run>
+                <env>
+                  <POSTGRES_PASSWORD>postgres</POSTGRES_PASSWORD>
+                  <POSTGRES_USER>postgres</POSTGRES_USER>
+                  <EHRBASE_USER>ehrbase</EHRBASE_USER>
+                  <EHRBASE_PASSWORD>ehrbase</EHRBASE_PASSWORD>
+                </env>
+                <ports>
+                  <port>${database.port}:${database.port}</port>
+                </ports>
+                <wait>
+                  <!--<log>database system is ready to accept connections</log>-->
+                  <time>20000</time>
+                </wait>
+                <log>
+                  <enabled>true</enabled>
+                  <prefix>DB__</prefix>
+                  <color>red</color>
+                </log>
+              </run>
+            </image>
+          </images>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-postgres</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>start</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>stop-postgres</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default</id>
+            <goals>
+              <goal>migrate</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+            <configuration>
+              <locations>
+                <location>classpath:db/migration</location>
+              </locations>
+              <url>jdbc:postgresql://${database.host}:${database.port}/${database.name}</url>
+              <driver>org.postgresql.Driver</driver>
+              <user>${database.user}</user>
+              <password>${database.pass}</password>
+              <defaultSchema>ehr</defaultSchema>
+              <schemas>
+                <schema>ehr</schema>
+              </schemas>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+
+</project>

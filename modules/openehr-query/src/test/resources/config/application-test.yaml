@@ -1,0 +1,12 @@
+debug: false
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ehrbase
+    username: ehrbase
+    password: ehrbase
+    hikari:
+      driver-class-name: org.postgresql.Driver
+
+  flyway:
+    enabled: false
