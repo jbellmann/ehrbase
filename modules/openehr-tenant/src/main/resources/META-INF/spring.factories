@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.ehrbase.modules.tenant.config.TenantRepositoryConfiguration

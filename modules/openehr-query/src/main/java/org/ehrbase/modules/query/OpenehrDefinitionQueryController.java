@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.ehrbase.api.annotations.TenantAware;
 import org.ehrbase.api.service.QueryService;
 import org.ehrbase.modules.query.specification.DefinitionQueryApiSpecification;
 import org.ehrbase.response.openehr.ErrorBodyPayload;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
+@TenantAware
 @RestController
 @RequestMapping(
     path = "${openehr-api.context-path:/rest/openehr}/v1/definition/query",

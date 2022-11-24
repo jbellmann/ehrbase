@@ -13,3 +13,6 @@ spring:
     password: ehrbase
     schemas:
       - ehr
+logging:
+  level:
+    org.jooq: TRACE

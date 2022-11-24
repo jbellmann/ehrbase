@@ -40,7 +40,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 /**
  * Base {@link HandlerInterceptor} that provides the common logic for handling audit feature.
  */
-public abstract class OpenEhrAuditInterceptor<T extends OpenEhrAuditDataset> implements HandlerInterceptor {
+public abstract class OpenEhrAuditInterceptor<T extends OpenEhrAuditDataset> implements
+    HandlerInterceptor {
 
     public static final String EHR_ID_ATTRIBUTE = OpenEhrAuditInterceptor.class.getName() + ".EHR_ID";
 

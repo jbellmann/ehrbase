@@ -28,11 +28,6 @@ public class PostgresInitializer implements
   public static Map<String, String> getProperties() {
     Startables.deepStart(Stream.of(postgres)).join();
 
-    try {
-      Thread.sleep(20_000);
-    } catch (InterruptedException e) {
-      throw new RuntimeException(e);
-    }
     String url = "jdbc:postgresql://localhost:" + postgres.getMappedPort(5432) + "/ehrbase";
     log.info("URL TO POSTGRES : {}", url);
     return Map.of(

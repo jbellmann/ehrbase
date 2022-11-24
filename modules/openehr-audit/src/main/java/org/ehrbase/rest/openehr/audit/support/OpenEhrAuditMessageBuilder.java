@@ -31,8 +31,7 @@ import org.openehealth.ipf.commons.audit.utils.AuditUtils;
  * for building DICOM audit messages as specified in openEHR Audit Event Message Specifications.
  */
 @SuppressWarnings("UnusedReturnValue")
-public abstract class OpenEhrAuditMessageBuilder<T extends OpenEhrAuditMessageBuilder<T>>
-        extends DelegatingAuditMessageBuilder<T, CustomAuditMessageBuilder> {
+public abstract class OpenEhrAuditMessageBuilder<T extends OpenEhrAuditMessageBuilder<T>> extends DelegatingAuditMessageBuilder<T, CustomAuditMessageBuilder> {
 
     protected final AuditContext auditContext;
 

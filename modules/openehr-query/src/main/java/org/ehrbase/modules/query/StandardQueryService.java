@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
 import org.ehrbase.api.definitions.QueryMode;
@@ -37,6 +36,7 @@ import org.ehrbase.response.ehrscape.QueryDefinitionResultDto;
 import org.ehrbase.response.ehrscape.QueryResultDto;
 import org.ehrbase.validation.terminology.ExternalTerminologyValidation;
 import org.jooq.exception.DataAccessException;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClientException;
 
@@ -44,26 +44,8 @@ import org.springframework.web.client.RestClientException;
 @RequiredArgsConstructor
 public class StandardQueryService implements QueryService {
 
-    private final ExternalTerminologyValidation tsAdapter;
+    private final ExternalTerminologyValidation tsAdapter; // used in queryAql
     private final QueryRepository queryRepository;
-
-    /**
-    @Autowired
-    public QueryServiceImp(
-            // KnowledgeCacheService knowledgeCacheService, // not used here directly
-            DSLContext context, // not used here directly
-            ServerConfig serverConfig, // not used here directly
-            ExternalTerminologyValidation tsAdapter, QueryRepository queryRepository) {
-
-        //super(knowledgeCacheService, context, serverConfig);
-        this.tsAdapter = tsAdapter;
-        this.queryRepository = queryRepository;
-    }
-    */
-
-    private static BiConsumer<Map<?, ?>, String> checkNonNull = (map, errMsg) -> {
-        if (map == null) throw new IllegalArgumentException(errMsg);
-    };
 
     @Override
     public QueryResultDto query(
@@ -97,13 +79,11 @@ public class StandardQueryService implements QueryService {
             boolean explain,
             Supplier<AqlResult> resultSupplier,
             Map<String, Set<Object>> auditResultMap) {
-        checkNonNull.accept(auditResultMap, format(ERR_MAP_NON_NULL, "auditResultMap"));
+        Assert.notNull(auditResultMap, format(ERR_MAP_NON_NULL, "auditResultMap"));
         try {
             AqlResult aqlResult = resultSupplier.get();
 
-            // why are we copying stuff here
-            // auditResultMap is not processed any further
-            // auditResultMap.putAll(aqlResult.getAuditResultMap());
+            auditResultMap.putAll(aqlResult.getAuditResultMap());
             return AqlResultMapper.formatResult(aqlResult, queryString, explain);
         } catch (RestClientException rce) {
             throw new BadGatewayException(

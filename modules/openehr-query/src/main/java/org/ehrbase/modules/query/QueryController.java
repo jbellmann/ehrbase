@@ -28,7 +28,7 @@ public class QueryController {
 
   @PostMapping
   public ResponseEntity<QueryResponseData> query(
-      @RequestParam(value = "explain", defaultValue = "false") Boolean explain, @RequestBody() String content) {
+      @RequestParam(value = "explain", defaultValue = "false") Boolean explain, @RequestBody String content) {
 
     Map<String, String> kvPairs = extractQuery(new String(content.getBytes()));
 
