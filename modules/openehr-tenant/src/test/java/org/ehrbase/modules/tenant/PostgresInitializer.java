@@ -23,7 +23,6 @@ public class PostgresInitializer implements
           "EHRBASE_PASSWORD", "ehrbase"
       ))
       .withExposedPorts(5432);
-      //.withClasspathResourceMapping("createdb.sql","/docker-entrypoint-initdb.d/", BindMode.READ_ONLY );
 
   public static Map<String, String> getProperties() {
     Startables.deepStart(Stream.of(postgres)).join();
