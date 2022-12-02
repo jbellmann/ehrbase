@@ -1,4 +1,4 @@
-package org.ehrbase.modules.tenant;
+package org.ehrbase.test.database;
 
 import java.util.Map;
 import java.util.stream.Stream;
@@ -39,7 +39,7 @@ public class PostgresInitializer implements
   public void initialize(ConfigurableApplicationContext applicationContext) {
     var env = applicationContext.getEnvironment();
     env.getPropertySources().addFirst(new MapPropertySource(
-        "testcontainers", (Map) getProperties()
+        "postgresInitializer", (Map) getProperties()
     ));
   }
 }

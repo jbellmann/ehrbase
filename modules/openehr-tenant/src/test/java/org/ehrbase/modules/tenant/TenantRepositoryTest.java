@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.ehrbase.api.exception.ObjectNotFoundException;
 import org.ehrbase.api.tenant.Tenant;
 import org.ehrbase.modules.tenant.config.TenantRepositoryConfiguration;
+import org.ehrbase.test.database.PostgresInitializer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;

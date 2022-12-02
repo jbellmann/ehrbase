@@ -4,6 +4,7 @@ import java.util.List;
 import org.ehrbase.api.service.QueryService;
 import org.ehrbase.modules.query.autoconfigure.QueryServiceConfiguration;
 import org.ehrbase.response.ehrscape.QueryDefinitionResultDto;
+import org.ehrbase.test.database.PostgresInitializer;
 import org.jooq.impl.DefaultExecuteListenerProvider;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest(classes = {
     QueryServiceConfiguration.class,
-    QueryServiceIT.CustomTestConfiguration.class,
+    QueryServiceTest.CustomTestConfiguration.class,
     DataSourceAutoConfiguration.class,
     FlywayAutoConfiguration.class,
     JooqAutoConfiguration.class
@@ -29,7 +30,7 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(initializers = {PostgresInitializer.class})
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class QueryServiceIT {
+public class QueryServiceTest {
 
   @Autowired
   private QueryService queryService;

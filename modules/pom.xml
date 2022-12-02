@@ -13,6 +13,7 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>openehr-test-support-postgres</module>
     <module>openehr-aql</module>
     <module>openehr-tenant</module>
     <module>openehr-audit</module>
